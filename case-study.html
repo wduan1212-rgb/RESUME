@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Case Study / 项目资料页 | Wang Duan Motion Archive</title>
+    <meta name="description" content="王端个人作品集项目详情页。">
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body>
+    <div class="shell" data-case-page>
+      <header class="site-header">
+        <nav class="nav" aria-label="Primary navigation">
+          <a class="brand" href="index.html" aria-label="Wang Duan Motion Archive home">
+            <span class="brand-mark">WD</span>
+            <span class="brand-copy">
+              <span class="brand-title">Wang Duan Motion Archive / 王端 AI 动态档案</span>
+              <span class="brand-subtitle">AI Video / Vibe Coding / Visual Design</span>
+            </span>
+          </a>
+          <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-label="Open navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-links" data-nav-links>
+            <a href="index.html">Home 首页</a>
+            <a href="works.html">Works 作品</a>
+            <a href="index.html#timeline">Timeline 时间轴</a>
+            <a href="about.html">About 关于</a>
+            <a href="index.html#contact">Contact 联系</a>
+          </div>
+        </nav>
+      </header>
+
+      <main class="page-main">
+        <section class="case-hero">
+          <div class="container case-hero-grid">
+            <div class="reveal">
+              <p class="section-kicker" data-case-category>Project Category</p>
+              <h1 class="case-title" data-case-title>Project Title</h1>
+              <p class="section-lead" data-case-summary></p>
+              <div class="meta-row" data-case-tags></div>
+              <div class="case-meta-grid" data-case-meta></div>
+              <div class="cta-row">
+                <button class="button primary" type="button" data-case-preview-button data-open-video="">Open Media</button>
+                <a class="button" href="works.html">Back to Works</a>
+              </div>
+            </div>
+            <div class="preview-shell reveal delay-1" data-case-visual></div>
+          </div>
+        </section>
+
+        <section class="section compact">
+          <div class="container case-layout">
+            <aside class="case-index reveal">
+              <a href="#overview">Project Overview</a>
+              <a href="#goal">Creative Goal</a>
+              <a href="#strategy">Visual Strategy</a>
+              <a href="#storyboard">Storyboard</a>
+              <a href="#process">Process</a>
+              <a href="#preview">Final Preview</a>
+              <a href="#reflection">Reflection</a>
+            </aside>
+
+            <div>
+              <section class="case-section reveal" id="overview">
+                <h2>Project Overview / 项目概览</h2>
+                <p>项目资料页记录作品类型、权重、年份、平台、工具、角色、创意目标、视觉策略与最终媒体入口。</p>
+              </section>
+
+              <section class="case-section reveal" id="goal">
+                <h2>Creative Goal / 创作目标</h2>
+                <p data-creative-goal></p>
+              </section>
+
+              <section class="case-section reveal" id="strategy">
+                <h2>Visual Strategy / 视觉策略</h2>
+                <p data-visual-strategy></p>
+              </section>
+
+              <section class="case-section reveal" id="storyboard">
+                <h2>Storyboard / Structure</h2>
+                <div class="shot-list">
+                  <div class="shot-item"><span>Shot 01</span><strong>Opening / 开场</strong></div>
+                  <div class="shot-item"><span>Shot 02</span><strong>Subject Reveal / 主体呈现</strong></div>
+                  <div class="shot-item"><span>Shot 03</span><strong>Usage Scene / 使用场景</strong></div>
+                  <div class="shot-item"><span>Shot 04</span><strong>Selling Point / 卖点表达</strong></div>
+                  <div class="shot-item"><span>Shot 05</span><strong>Final Look / 收束画面</strong></div>
+                </div>
+              </section>
+
+              <section class="case-section reveal" id="process">
+                <h2>Process / 创作流程</h2>
+                <ul>
+                  <li>Product Analysis / 产品分析</li>
+                  <li>Script Design / 脚本设计</li>
+                  <li>Storyboard / 分镜规划</li>
+                  <li>Prompt Design / 提示词设计</li>
+                  <li>Video Generation / 视频生成</li>
+                  <li>Edit and Delivery / 剪辑交付</li>
+                </ul>
+              </section>
+
+              <section class="case-section reveal" id="value">
+                <h2>Result and Value / 结果与价值</h2>
+                <p data-case-value></p>
+              </section>
+
+              <section class="case-section reveal" id="preview">
+                <h2>Final Preview / 最终预览</h2>
+                <button class="video-placeholder-large" type="button" data-case-preview-button data-open-video="">
+                  <span class="play-button" aria-hidden="true"></span>
+                  <span class="placeholder-copy">
+                    <strong>Open Media Preview</strong>
+                    <span>查看视频、展板或项目媒体入口。</span>
+                  </span>
+                </button>
+              </section>
+
+              <section class="case-section reveal" id="reflection">
+                <h2>Reflection / 项目总结</h2>
+                <p data-reflection></p>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" data-video-modal aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h2 class="modal-title" id="video-modal-title" data-modal-title>Media Preview</h2>
+          <button class="modal-close" type="button" data-modal-close aria-label="Close modal">×</button>
+        </div>
+        <div class="modal-body" data-modal-body></div>
+      </div>
+    </div>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

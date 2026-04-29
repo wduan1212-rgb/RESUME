@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Works / 作品总览 | Wang Duan Motion Archive</title>
+    <meta name="description" content="按行业分类查看王端 AI 视频、Vibe Coding 网站、展板与 PDF 归档。">
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+  <body>
+    <div class="shell">
+      <header class="site-header">
+        <nav class="nav" aria-label="Primary navigation">
+          <a class="brand" href="index.html" aria-label="Wang Duan Motion Archive home">
+            <span class="brand-mark">WD</span>
+            <span class="brand-copy">
+              <span class="brand-title">Wang Duan Motion Archive / 王端 AI 动态档案</span>
+              <span class="brand-subtitle">AI Video / Vibe Coding / Visual Design</span>
+            </span>
+          </a>
+          <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-label="Open navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-links" data-nav-links>
+            <a href="index.html">Home 首页</a>
+            <a href="works.html">Works 作品</a>
+            <a href="index.html#timeline">Timeline 时间轴</a>
+            <a href="about.html">About 关于</a>
+            <a href="index.html#contact">Contact 联系</a>
+          </div>
+        </nav>
+      </header>
+
+      <main class="page-main">
+        <section class="page-title-block">
+          <div class="container">
+            <p class="section-kicker reveal">Works / 作品总览</p>
+            <h1 class="section-title reveal delay-1">AI Video / Vibe Coding<br><span>Project Archive</span></h1>
+            <p class="section-lead reveal delay-2">
+              横屏项目、竖屏广告、游戏视觉、Vibe Coding 与归档作品按行业筛选展示。
+            </p>
+          </div>
+        </section>
+
+        <div class="filter-bar">
+          <div class="container">
+            <div class="filter-row" data-filters aria-label="Work filters"></div>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="container">
+            <div class="section-heading reveal">
+              <div>
+                <p class="section-kicker">Filtered Archive</p>
+                <h2 class="section-title">Project Archive<br><span>作品归档</span></h2>
+              </div>
+              <span class="works-count" data-works-count></span>
+            </div>
+            <div class="work-grid" data-works-grid></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" data-video-modal aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h2 class="modal-title" id="video-modal-title" data-modal-title>Media Preview</h2>
+          <button class="modal-close" type="button" data-modal-close aria-label="Close modal">×</button>
+        </div>
+        <div class="modal-body" data-modal-body></div>
+      </div>
+    </div>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
