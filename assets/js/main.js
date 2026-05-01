@@ -542,12 +542,8 @@
 
   function setupHeroVideo() {
     const video = $("[data-hero-video]");
-    const soundButton = $("[data-sound-toggle]");
-    const label = $("[data-sound-label]");
     if (!video) return;
 
-    let userVolume = 1;
-    let soundWanted = false;
     const videoPath = site.heroVideo || "";
     video.poster = site.heroPoster || "";
     video.muted = true;
@@ -558,26 +554,11 @@
       video.load();
     }
 
-    const updateLabel = (state) => {
-      if (!label) return;
-      if (!videoPath) label.textContent = "Media";
-      else if (state === "on") label.textContent = "Sound On";
-      else label.textContent = "Sound Off";
-    };
-
-    const fadeByScroll = () => {
-      if (!video.duration && !video.src) return;
-      const heroHeight = Math.max(window.innerHeight, 1);
-      const progress = Math.min(1, Math.max(0, window.scrollY / heroHeight));
-      video.volume = soundWanted ? Math.max(0, userVolume * (1 - progress)) : 0;
-    };
-
     const playHero = async () => {
       try {
-        video.muted = !soundWanted;
-        video.volume = soundWanted ? userVolume : 0;
+        video.muted = true;
+        video.volume = 0;
         await video.play();
-        updateLabel(soundWanted ? "on" : "off");
       } catch (error) {
         try {
           video.muted = true;
@@ -586,34 +567,10 @@
         } catch (mutedError) {
           // Keep the static poster if the browser refuses autoplay entirely.
         }
-        soundWanted = false;
-        updateLabel("off");
       }
     };
 
     if (video.src) playHero();
-    updateLabel("off");
-
-    if (soundButton) {
-      soundButton.addEventListener("click", async () => {
-        soundWanted = !soundWanted;
-        try {
-          if (video.src) {
-            video.muted = !soundWanted;
-            video.volume = soundWanted ? userVolume : 0;
-            await video.play();
-          }
-          updateLabel(soundWanted ? "on" : "off");
-        } catch (error) {
-          soundWanted = false;
-          video.muted = true;
-          video.volume = 0;
-          updateLabel("off");
-        }
-      });
-    }
-
-    window.addEventListener("scroll", fadeByScroll, { passive: true });
   }
 
   function setupWheelHorizontal(root = document) {
