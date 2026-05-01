@@ -4094,7 +4094,24 @@ video.embed-slot {
 }
 
 .hero-video-only::after {
-  display: none;
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  z-index: 2;
+  height: clamp(170px, 26vh, 320px);
+  display: block;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(2, 4, 6, 0), rgba(2, 4, 6, 0.34) 34%, rgba(2, 8, 12, 0.88) 74%, rgba(2, 8, 12, 1));
+  background-size: auto;
+  mask-image: none;
+}
+
+.hero-video-only + .intro-video-section {
+  border-top: 0;
+  background:
+    linear-gradient(180deg, rgba(2, 8, 12, 1), rgba(2, 8, 12, 0.58) 18%, rgba(2, 8, 12, 0.52)),
+    radial-gradient(circle at 18% 36%, rgba(54, 230, 244, 0.12), transparent 24rem);
 }
 
 .hero-feishu-button {
