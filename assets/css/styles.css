@@ -2069,7 +2069,7 @@ video.embed-slot {
   z-index: -5;
   background:
     linear-gradient(90deg, rgba(2, 4, 6, 0.88), rgba(2, 4, 6, 0.44), rgba(2, 4, 6, 0.88)),
-    url("../covers/horizontal/dragon-covenant-finale.png") center / cover no-repeat;
+    url("../hero/portfolio-hero-poster.png") center / cover no-repeat;
   filter: saturate(1.08) contrast(1.05);
 }
 
@@ -4082,7 +4082,7 @@ video.embed-slot {
   z-index: -1;
   background:
     linear-gradient(90deg, rgba(2, 4, 6, 0.44), rgba(2, 4, 6, 0.12), rgba(2, 4, 6, 0.5)),
-    url("../covers/horizontal/dragon-covenant-finale.png") center / cover no-repeat;
+    url("../hero/portfolio-hero-poster.png") center / cover no-repeat;
 }
 
 .hero-video-only .hero-video-overlay {
