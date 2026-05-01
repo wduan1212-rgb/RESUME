@@ -21,6 +21,23 @@
 
   const findWork = (id) => works.find((work) => work.id === id);
   const byId = (id) => findWork(id) || works[0];
+  const categoryAliases = {
+    "Vibe Coding": "AI编程",
+    "AI 编程": "AI编程",
+    "Commercial Ads": "AI电商",
+    "E-commerce Ads": "AI电商",
+    "电商广告": "AI电商",
+    "App Promo": "APP宣传",
+    "App 宣传": "APP宣传",
+    "Travel & Overseas": "APP宣传",
+    "Health & Consumer": "AI电商",
+    "Game Visuals": "AI短片",
+    "AI Short Films": "AI短片",
+    "AI 短片": "AI短片",
+    "Exhibition Boards": "其他",
+    "Portfolio Archive": "其他"
+  };
+  const normalizeCategory = (category) => categoryAliases[category] || category;
 
   function iconKey(category) {
     return categories.find((item) => item.key === category)?.icon || "all";
@@ -166,7 +183,7 @@
         <div class="card-body">
           <div class="card-overline">
             <span>${escapeHTML(work.weight || "")}</span>
-            <span>${escapeHTML(work.category)} / ${escapeHTML(work.categoryCn)}</span>
+            <span>${escapeHTML(work.categoryCn || work.category)}</span>
           </div>
           <h3>${escapeHTML(work.title)}<br><span>${escapeHTML(work.titleCn)}</span></h3>
           ${showSummary ? `<p>${escapeHTML(work.summaryCn)}</p>` : ""}
@@ -178,7 +195,7 @@
   function renderHighlights() {
     const root = $("[data-highlights]");
     if (!root) return;
-    const keys = ["Commercial Ads", "App Promo", "Vibe Coding", "Game Visuals", "AI Short Films"];
+    const keys = ["AI编程", "APP宣传", "AI短片", "AI电商", "其他"];
     root.innerHTML = categories
       .filter((category) => keys.includes(category.key))
       .map((category) => {
@@ -190,7 +207,7 @@
                 <span class="metric-icon" data-icon="${escapeHTML(category.icon)}" aria-hidden="true"></span>
                 <span class="count">${String(countCategory(category.key)).padStart(2, "0")} Series</span>
               </div>
-              <h3>${escapeHTML(category.key)}<br><span>${escapeHTML(category.cn)}</span></h3>
+              <h3>${escapeHTML(category.cn || category.key)}</h3>
               <p>${escapeHTML(category.summary)}</p>
             </div>
             <span class="text-link">View Works</span>
@@ -323,7 +340,7 @@
           ${boards2025.map((work) => archiveItem(work)).join("")}
         </div>
       `)}
-      ${yearBlock("2024", "Portfolio Foundation", "PDF Archive", `
+      ${yearBlock("2024", "Portfolio Foundation", "Feishu Link", `
         <div class="archive-grid">
           ${content2024.map((work) => archiveItem(work, true)).join("")}
         </div>
@@ -341,7 +358,7 @@
         return `
           <a class="category-card reveal" href="works.html?category=${encodeURIComponent(category.key)}" data-accent="${escapeHTML(firstWork?.accent || "cyan")}">
             <span class="category-icon" data-icon="${escapeHTML(category.icon)}" aria-hidden="true"></span>
-            <h3>${escapeHTML(category.key)}<br><span>${escapeHTML(category.cn)}</span></h3>
+            <h3>${escapeHTML(category.cn || category.key)}</h3>
             <p>${escapeHTML(category.summary)}</p>
           </a>
         `;
@@ -376,14 +393,14 @@
       .map(
         (category) => `
           <button class="filter-button" type="button" data-filter="${escapeHTML(category.key)}">
-            ${escapeHTML(category.key)} / ${escapeHTML(category.cn)}
+            ${escapeHTML(category.cn || category.key)}
           </button>
         `
       )
       .join("");
 
     const params = new URLSearchParams(window.location.search);
-    const initial = params.get("category") || "All";
+    const initial = normalizeCategory(params.get("category") || "All");
 
     const renderWorksSections = (items) => {
       const horizontal = items.filter((work) => orientationOf(work) !== "vertical" && work.type !== "pdf-archive" && work.type !== "exhibition-board");
@@ -441,7 +458,8 @@
     };
 
     const applyFilter = (category) => {
-      const selected = categories.some((item) => item.key === category) ? category : "All";
+      const normalizedCategory = normalizeCategory(category);
+      const selected = categories.some((item) => item.key === normalizedCategory) ? normalizedCategory : "All";
       $$(".filter-button", filters).forEach((button) => {
         button.classList.toggle("is-active", button.dataset.filter === selected);
       });
@@ -480,7 +498,7 @@
     if (!work) return;
 
     document.title = `${work.title} | Wang Duan Motion Archive`;
-    setText("[data-case-category]", `${work.category} / ${work.categoryCn}`);
+    setText("[data-case-category]", work.categoryCn || work.category);
     const title = $("[data-case-title]");
     if (title) title.innerHTML = `${escapeHTML(work.title)}<br><span>${escapeHTML(work.titleCn)}</span>`;
     setText("[data-case-summary]", work.summaryCn);
@@ -491,7 +509,7 @@
 
     const meta = [
       ["Weight", work.weight],
-      ["Project Type", `${work.category} / ${work.categoryCn}`],
+      ["Project Type", work.categoryCn || work.category],
       ["Year", work.year],
       ["Format", work.format],
       ["Platform", work.platform],
@@ -526,7 +544,7 @@
     const video = $("[data-hero-video]");
     const soundButton = $("[data-sound-toggle]");
     const label = $("[data-sound-label]");
-    if (!video || !soundButton) return;
+    if (!video) return;
 
     let userVolume = 1;
     let soundWanted = false;
@@ -576,22 +594,24 @@
     if (video.src) playHero();
     updateLabel("off");
 
-    soundButton.addEventListener("click", async () => {
-      soundWanted = !soundWanted;
-      try {
-        if (video.src) {
-          video.muted = !soundWanted;
-          video.volume = soundWanted ? userVolume : 0;
-          await video.play();
+    if (soundButton) {
+      soundButton.addEventListener("click", async () => {
+        soundWanted = !soundWanted;
+        try {
+          if (video.src) {
+            video.muted = !soundWanted;
+            video.volume = soundWanted ? userVolume : 0;
+            await video.play();
+          }
+          updateLabel(soundWanted ? "on" : "off");
+        } catch (error) {
+          soundWanted = false;
+          video.muted = true;
+          video.volume = 0;
+          updateLabel("off");
         }
-        updateLabel(soundWanted ? "on" : "off");
-      } catch (error) {
-        soundWanted = false;
-        video.muted = true;
-        video.volume = 0;
-        updateLabel("off");
-      }
-    });
+      });
+    }
 
     window.addEventListener("scroll", fadeByScroll, { passive: true });
   }

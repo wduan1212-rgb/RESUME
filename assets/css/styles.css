@@ -2069,7 +2069,7 @@ video.embed-slot {
   z-index: -5;
   background:
     linear-gradient(90deg, rgba(2, 4, 6, 0.88), rgba(2, 4, 6, 0.44), rgba(2, 4, 6, 0.88)),
-    url("../hero/hero-poster.png") center / cover no-repeat;
+    url("../covers/horizontal/dragon-covenant-finale.png") center / cover no-repeat;
   filter: saturate(1.08) contrast(1.05);
 }
 
@@ -2745,7 +2745,7 @@ a[aria-disabled="true"] {
   background:
     linear-gradient(120deg, rgba(54, 230, 244, 0.13), transparent 38%),
     linear-gradient(180deg, rgba(3, 8, 12, 0.18), rgba(3, 8, 12, 0.88)),
-    url("../hero/hero-poster.png") center / cover no-repeat,
+    url("../covers/horizontal/quick-preview-cover.png") center / cover no-repeat,
     #020609;
   overflow: hidden;
 }
@@ -4060,5 +4060,107 @@ video.embed-slot {
   .dragon-hero-video,
   .dragon-origin-media video {
     animation: none;
+  }
+}
+
+/* Homepage video-only upgrade */
+.hero-video-only {
+  min-height: 100svh;
+  padding: 0;
+  display: block;
+  background: #020406;
+}
+
+.hero-video-only .hero-bg-video {
+  z-index: 0;
+  display: block;
+  object-fit: cover;
+  background: #020406;
+}
+
+.hero-video-only .hero-poster-fallback {
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(2, 4, 6, 0.44), rgba(2, 4, 6, 0.12), rgba(2, 4, 6, 0.5)),
+    url("../covers/horizontal/dragon-covenant-finale.png") center / cover no-repeat;
+}
+
+.hero-video-only .hero-video-overlay {
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.12) 58%, rgba(0, 0, 0, 0.54)),
+    radial-gradient(circle at 50% 82%, rgba(31, 196, 255, 0.18), transparent 24rem);
+}
+
+.hero-video-only::after {
+  display: none;
+}
+
+.hero-feishu-button {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(56px, 8vh, 96px);
+  z-index: 5;
+  min-height: 62px;
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 8px;
+  color: #f7fdff;
+  text-decoration: none;
+  background:
+    radial-gradient(circle at 20% 22%, rgba(118, 255, 212, 0.22), transparent 7rem),
+    linear-gradient(135deg, rgba(4, 30, 38, 0.72), rgba(7, 92, 142, 0.7));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(16px);
+  transform: translateX(-50%);
+  transition: transform 0.24s var(--ease), border-color 0.24s var(--ease), box-shadow 0.24s var(--ease);
+}
+
+.hero-feishu-button:hover {
+  border-color: rgba(116, 238, 255, 0.72);
+  box-shadow: 0 22px 62px rgba(0, 178, 255, 0.24);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.hero-feishu-button img {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.hero-feishu-button span {
+  display: block;
+  min-width: 178px;
+  line-height: 1.22;
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: 0.01em;
+}
+
+.hero-feishu-button em {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  .hero-video-only {
+    min-height: 100svh;
+    padding: 0;
+  }
+
+  .hero-feishu-button {
+    bottom: max(34px, env(safe-area-inset-bottom));
+    width: min(calc(100% - 36px), 340px);
+    justify-content: center;
   }
 }
