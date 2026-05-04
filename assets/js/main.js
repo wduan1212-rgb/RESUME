@@ -182,7 +182,6 @@
         <div class="card-visual">${visualActionMarkup(work, options)}</div>
         <div class="card-body">
           <div class="card-overline">
-            <span>${escapeHTML(work.weight || "")}</span>
             <span>${escapeHTML(work.categoryCn || work.category)}</span>
           </div>
           <h3>${escapeHTML(work.title)}<br><span>${escapeHTML(work.titleCn)}</span></h3>
@@ -300,6 +299,132 @@
     `;
   }
 
+  function timelineCoverMarkup(work) {
+    const orientation = orientationOf(work);
+    return `
+      <div class="project-cover-wrap is-${escapeHTML(orientation)}">
+        ${coverImageMarkup(work, `project-cover is-${orientation}`)}
+      </div>
+    `;
+  }
+
+  function timelineProjectCard(work, groupTitle) {
+    const href = mediaHref(work);
+    const subTag = work.timelineSubTag || "";
+    const tagLine = `
+      <div class="project-tags">
+        <span>${escapeHTML(subTag || groupTitle)}</span>
+        ${subTag ? `<span>${escapeHTML(groupTitle)}</span>` : ""}
+      </div>
+    `;
+    const inner = `
+      ${timelineCoverMarkup(work)}
+      <div class="project-info">
+        <div>
+          <h4 class="project-title">${escapeHTML(work.title)}</h4>
+          <p class="project-subtitle">${escapeHTML(work.titleCn || work.summaryCn || "")}</p>
+        </div>
+        ${tagLine}
+      </div>
+    `;
+    const className = `timeline-project-card orientation-${escapeHTML(orientationOf(work))}`;
+    if (!href) return `<article class="${className}">${inner}</article>`;
+    const isExternal = /^https?:\/\//i.test(href);
+    return `<a class="${className}" href="${escapeHTML(href)}"${isExternal ? ' target="_blank" rel="noopener"' : ""} aria-label="Open ${escapeHTML(work.title)}">${inner}</a>`;
+  }
+
+  function createDragonGameTimelineItem() {
+    return {
+      id: "dragon-covenant-game",
+      title: "Dragon Covenant Web Game",
+      titleCn: "龙之契互动网页游戏",
+      year: 2026,
+      category: "AI编程",
+      categoryCn: "Vibe Coding",
+      type: "website-recording",
+      format: "Web Game",
+      coverUrl: dragonSeries.indexPosterUrl || findWork("dragon-covenant-dragon")?.coverUrl || "",
+      coverVideoUrl: dragonSeries.indexMotionUrl || "",
+      externalUrl: dragonSeries.gameUrl || "https://wduan1212-rgb.github.io/Dragon/",
+      timelineSubTag: "游戏类",
+      summaryCn: "东方奇幻互动网页游戏入口。"
+    };
+  }
+
+  function renderTimeline2026(content2026) {
+    const byIds = (ids) => ids.map(findWork).filter(Boolean);
+    const withSubTag = (work, subTag) => ({ ...work, timelineSubTag: subTag });
+    const vibeCodingItems = [
+      createDragonGameTimelineItem(),
+      ...byIds(["starfield-frontline-game"]).map((work) => withSubTag(work, "游戏类")),
+      ...byIds(["ai-creative-tool-system", "self-operated-production-system"]).map((work) => withSubTag(work, "工具类")),
+      ...byIds(["renpy-study-guide"]).map((work) => withSubTag(work, "教学类"))
+    ];
+
+    const groups = [
+      {
+        id: "ai-short",
+        className: "column-ai-short",
+        title: "AI短片",
+        description: "横屏叙事短片 / 游戏 CG / Demo",
+        items: byIds(["dragon-covenant-finale", "baidu-cloud-doorway", "xundao-daqian", "undersea-demo"])
+      },
+      {
+        id: "app-promo",
+        className: "column-app",
+        title: "AI创意视频-APP宣传",
+        description: "支付、旅行、贷款、出行等 App 视频",
+        items: byIds(["alipay-overseas-project", "trip-uca-travel", "asha-easy-cash-app", "brazil-local-campaign", "vivago-overseas-campaign"])
+      },
+      {
+        id: "ecommerce",
+        className: "column-ecommerce",
+        title: "AI创意视频-电商宣传",
+        description: "服饰、产品、消费品与投放广告",
+        items: byIds(["ebenb-cooling-pants", "varta-battery-campaign", "tt-fashion-series", "arthur-andrew-medical"])
+      },
+      {
+        id: "vibe",
+        className: "column-vibe",
+        title: "Vibe Coding网站合集",
+        description: "网站、工具、游戏与教学 Demo",
+        items: vibeCodingItems
+      }
+    ];
+
+    const totalCount = groups.reduce((sum, group) => sum + group.items.length, 0) || content2026.length;
+    return `
+      <div class="year-note reveal">
+        <strong>2026 核心创作年：</strong>聚焦 AI 短片、APP 宣传、电商视频与 Vibe Coding 网站合集。
+      </div>
+      <div class="timeline-2026-matrix reveal" aria-label="2026 four-track creation timeline">
+        <div class="timeline-2026-head">
+          <span>2026 Main Creation Year</span>
+          <em>AI Short Films · APP Promo · E-commerce Ads · Vibe Coding</em>
+          <strong>${totalCount} project series</strong>
+        </div>
+        <div class="timeline-2026-grid">
+          ${groups.map((group) => {
+            const loopItems = group.items.length > 1 ? [...group.items, ...group.items] : group.items;
+            return `
+              <section class="timeline-2026-column ${escapeHTML(group.className)}" aria-label="${escapeHTML(group.title)}">
+                <div class="timeline-column-header">
+                  <h4>${escapeHTML(group.title)}</h4>
+                  <p>${escapeHTML(group.description)}</p>
+                </div>
+                <div class="auto-column">
+                  <div class="auto-column-track">
+                    ${loopItems.map((work) => timelineProjectCard(work, group.title)).join("")}
+                  </div>
+                </div>
+              </section>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `;
+  }
+
   function renderTimeline() {
     const root = $("[data-timeline]");
     if (!root) return;
@@ -311,27 +436,7 @@
     const boards2025 = content2025.filter((work) => work.displayGroup === "timeline-2025-board");
 
     root.innerHTML = `
-      ${yearBlock("2026", "Main Creation Year", "Commercial Video / Vibe Coding / AI Film", `
-        <div class="year-note reveal">
-          <strong>2026 核心创作年：</strong>聚焦商业 AI 视频、App 宣传、Vibe Coding、游戏视觉与影像实验。
-        </div>
-        <div class="horizontal-gallery-shell reveal">
-          <div class="gallery-head">
-            <span>2026 Project Sequence / 2026 项目序列</span>
-            <em>${content2026.length} project series</em>
-          </div>
-          <button class="gallery-arrow gallery-arrow-left" type="button" data-gallery-scroll="-1" aria-label="Scroll projects left">‹</button>
-          <div class="horizontal-gallery" data-wheel-horizontal>
-            <div class="horizontal-track">
-              ${content2026.map((work) => workCard(work, { summary: false, compact: true })).join("")}
-            </div>
-          </div>
-          <button class="gallery-arrow gallery-arrow-right" type="button" data-gallery-scroll="1" aria-label="Scroll projects right">›</button>
-          <div class="gallery-dots" data-gallery-dots aria-hidden="true">
-            ${Array.from({ length: Math.ceil(content2026.length / 2) }, (_, index) => `<span class="${index === 0 ? "is-active" : ""}"></span>`).join("")}
-          </div>
-        </div>
-      `)}
+      ${yearBlock("2026", "Main Creation Year", "AI Short Films · APP Promo · E-commerce Ads · Vibe Coding", renderTimeline2026(content2026))}
       ${yearBlock("2025", "Visual Exploration", "Dragon Covenant / Competition Boards", `
         <div class="year-note reveal">AIGC fantasy film studies and competition boards presented as a focused visual exploration archive. / AIGC 奇幻短片与竞赛展板构成独立视觉探索归档。</div>
         ${dragonOriginIndexCard()}
@@ -497,7 +602,7 @@
     const work = byId(params.get("id"));
     if (!work) return;
 
-    document.title = `${work.title} | Wang Duan Motion Archive`;
+    document.title = `${work.title} | WangDuan AI Portfolio`;
     setText("[data-case-category]", work.categoryCn || work.category);
     const title = $("[data-case-title]");
     if (title) title.innerHTML = `${escapeHTML(work.title)}<br><span>${escapeHTML(work.titleCn)}</span>`;
@@ -508,7 +613,6 @@
     if (visual) visual.innerHTML = visualMarkup(work);
 
     const meta = [
-      ["Weight", work.weight],
       ["Project Type", work.categoryCn || work.category],
       ["Year", work.year],
       ["Format", work.format],

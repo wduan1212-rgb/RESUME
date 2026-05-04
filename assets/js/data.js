@@ -1,6 +1,6 @@
 window.siteConfig = {
-  name: "Wang Duan Motion Archive",
-  nameZh: "王端 AI 动态档案",
+  name: "WangDuan AI Portfolio",
+  nameZh: "WangDuan AI Portfolio",
   tagline: "AI Video / Vibe Coding / Visual Design",
   taglineZh: "AI 视频 / AI 编程 / 视觉设计",
   email: "496511461@qq.com",
