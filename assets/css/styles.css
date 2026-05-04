@@ -17,9 +17,11 @@
   --radius: 8px;
   --max: 1180px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --font-en-serif: Georgia, "Times New Roman", serif;
+  --font-en-display: Georgia, "Times New Roman", serif;
+  --font-en-serif: var(--font-en-display);
+  --font-cn-title: "阿里妈妈数黑体", "Source Han Sans SC", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-cn-calligraphy: "禹卫书法云墨简体", "STKaiti", "KaiTi", serif;
-  --font-cn-body: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Hiragino Sans GB", sans-serif;
+  --font-cn-body: "方正兰亭超细黑简体", "FZLanTingHeiS-UL-GB", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Hiragino Sans GB", sans-serif;
 }
 
 * {
@@ -4535,5 +4537,171 @@ video.embed-slot {
 @media (prefers-reduced-motion: reduce) {
   .auto-column-track {
     animation: none;
+  }
+}
+
+/* V10 typography and portfolio archive refinements */
+body,
+.brand-subtitle,
+.section-lead,
+.card-body p,
+.archive-card p,
+.project-subtitle,
+.timeline-column-header p,
+.year-note,
+.about-copy p,
+.contact-list,
+.meta-item strong,
+.embed-slot span,
+.project-tags span,
+.pill,
+.card-overline span,
+.feishu-strip em,
+.hero-feishu-button em {
+  font-family: var(--font-cn-body);
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+.section-title,
+.case-title,
+.archive-card h3,
+.work-card .card-body h3,
+.works-section-head h3,
+.timeline-2026-head span,
+.project-title {
+  font-family: var(--font-en-display);
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+.section-title span,
+.case-title span,
+.work-card h3 span,
+.archive-card h3 span,
+.year-note strong,
+.timeline-column-header h4,
+.filter-button,
+.project-tags span,
+.pill,
+.card-overline span {
+  font-family: var(--font-cn-title);
+  font-style: normal;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.filter-button {
+  font-weight: 650;
+}
+
+.section-lead,
+.card-body p,
+.archive-card p,
+.project-subtitle,
+.year-note,
+.about-copy p {
+  color: rgba(225, 242, 245, 0.86);
+}
+
+.brand-title,
+.nav-links a,
+.archive-open-button {
+  font-family: var(--font-en-display);
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+.archive-open-button {
+  position: relative;
+  min-width: 168px;
+  min-height: 52px;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(116, 238, 255, 0.44);
+  border-radius: 999px;
+  color: #f6fdff;
+  background:
+    linear-gradient(135deg, rgba(54, 230, 244, 0.2), rgba(159, 124, 255, 0.18)),
+    rgba(6, 18, 23, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(116, 238, 255, 0.08) inset,
+    0 0 26px rgba(54, 230, 244, 0.18);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.28s var(--ease),
+    border-color 0.28s var(--ease),
+    box-shadow 0.28s var(--ease);
+}
+
+.archive-open-button::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.22) 45%, transparent 64%);
+  transform: translateX(-120%);
+  transition: transform 0.65s var(--ease);
+}
+
+.archive-open-button::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.archive-open-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.archive-open-button:hover,
+.archive-open-button:focus-visible {
+  border-color: rgba(185, 255, 98, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(185, 255, 98, 0.14) inset,
+    0 0 30px rgba(54, 230, 244, 0.3);
+  transform: translateY(-2px);
+}
+
+.archive-open-button:hover::before,
+.archive-open-button:focus-visible::before {
+  transform: translateX(120%);
+}
+
+.button-arrow {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(116, 238, 255, 0.28);
+  border-radius: 50%;
+  color: var(--lime);
+  line-height: 1;
+}
+
+.dragon-hero h1,
+.dragon-hero h1 span,
+.dragon-game-panel h2,
+.dragon-final-cta h2,
+.dragon-origin-copy h3,
+.dragon-chapter-card h3,
+.dragon-chapter-card h3 span {
+  font-family: var(--font-cn-calligraphy);
+  font-weight: 400;
+}
+
+@media (max-width: 760px) {
+  .archive-open-button {
+    width: 100%;
+    min-width: 0;
   }
 }

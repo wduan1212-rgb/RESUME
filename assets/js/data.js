@@ -12,7 +12,7 @@ window.siteConfig = {
   introVideo: "",
   socials: [
     { name: "wduan1212-rgb", icon: "assets/icons/github.svg", url: "https://github.com/wduan1212-rgb" },
-    { name: "金豆小子", icon: "assets/icons/xiaohongshu.svg", url: "https://www.xiaohongshu.com/search_result?keyword=%E9%87%91%E8%B1%86%E5%B0%8F%E5%AD%90" }
+    { name: "金豆小子", icon: "assets/icons/xiaohongshu.svg", url: "https://xhslink.com/m/9Vy4r7XlJLO" }
   ]
 };
 
@@ -650,7 +650,7 @@ window.portfolioWorks = [
     order: 30,
     weight: "2025 Key",
     title: "Dragon Covenant 01",
-    titleCn: "《龙之契》海底场景",
+    titleCn: "《龙之契》第一部",
     year: 2025,
     category: "AI短片",
     categoryCn: "AI短片",
@@ -670,8 +670,8 @@ window.portfolioWorks = [
     platform: "AIGC Competition",
     role: "海底场景、奇幻氛围、AI 视频探索",
     tools: "AI Video / Visual Design",
-    summary: "The first 2025 Dragon Covenant video, focused on underwater fantasy atmosphere.",
-    summaryCn: "《龙之契》视频之一：海底奇幻场景与龙影氛围。",
+    summary: "The first encounter between the protagonist and the sealed dragon, opening the fate-bound covenant between human and dragon.",
+    summaryCn: "主角与封印之龙的初遇，开启人与龙之间命运契约的第一章。",
     goal: "Preserve the early AIGC exploration line.",
     strategy: "Blue ocean light, dragon silhouette, coral, fish groups, and epic cinematic scale.",
     value: "2025 核心视觉探索项目。"
@@ -681,7 +681,7 @@ window.portfolioWorks = [
     order: 31,
     weight: "2025 Key",
     title: "Dragon Covenant 02",
-    titleCn: "《龙之契》龙与角色场景",
+    titleCn: "《龙之契》第二部",
     year: 2025,
     category: "AI短片",
     categoryCn: "AI短片",
@@ -701,8 +701,8 @@ window.portfolioWorks = [
     platform: "AIGC Competition",
     role: "龙与角色设定、史诗画面、AI 视频探索",
     tools: "AI Video / Visual Design",
-    summary: "The second 2025 Dragon Covenant video, focused on character and dragon confrontation.",
-    summaryCn: "《龙之契》视频之二：角色与东方龙的史诗奇幻场景。",
+    summary: "A turning point of trust and crisis, pushing the story forward between the shadow of the dragon and the human heart.",
+    summaryCn: "信任与危机的抉择，在龙影与人心之间推进故事的关键转折。",
     goal: "Keep the second Dragon Covenant video clearly inside the 2025 exploration area.",
     strategy: "Cliff, ruins, golden sky, dragon eye contact, and blue-gold contrast.",
     value: "2025 核心视觉探索项目。"

@@ -66,7 +66,7 @@
       link.setAttribute("href", site.feishuUrl || "#");
       if (site.feishuUrl && site.feishuUrl !== "#") {
         link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener");
+        link.setAttribute("rel", "noopener noreferrer");
         link.removeAttribute("aria-disabled");
       } else {
         link.setAttribute("aria-disabled", "true");
@@ -79,14 +79,18 @@
     const socials = $("[data-socials]");
     if (socials) {
       socials.innerHTML = (site.socials || [])
-        .map(
-          (social) => `
-            <a class="social-link social-icon-link" href="${escapeHTML(social.url || "#")}" aria-label="${escapeHTML(social.name)}"${!social.url || social.url === "#" ? ' aria-disabled="true"' : ""}>
+        .map((social) => {
+          const href = social.url || "#";
+          const isExternal = /^https?:\/\//i.test(href);
+          const linkState = !social.url || social.url === "#" ? ' aria-disabled="true"' : "";
+          const externalAttrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : "";
+          return `
+            <a class="social-link social-icon-link" href="${escapeHTML(href)}" aria-label="${escapeHTML(social.name)}"${externalAttrs}${linkState}>
               <img src="${escapeHTML(social.icon)}" alt="" width="18" height="18">
               <span>${escapeHTML(social.name)}</span>
             </a>
-          `
-        )
+          `;
+        })
         .join("");
       $$("a[aria-disabled='true']", socials).forEach((link) => {
         link.addEventListener("click", (event) => event.preventDefault());
@@ -245,7 +249,8 @@
   function archiveItem(work, pdf = false) {
     if (pdf) {
       const pdfHref = work.pdfUrl || `case-study.html?id=${encodeURIComponent(work.id)}`;
-      const pdfButtonLabel = /\.pdf(\?.*)?$/i.test(pdfHref) ? "Preview PDF<br>预览 PDF" : "Open Portfolio<br>打开作品集";
+      const pdfButtonLabel = /\.pdf(\?.*)?$/i.test(pdfHref) ? "Preview PDF" : "Open Portfolio";
+      const isExternal = /^https?:\/\//i.test(pdfHref);
       return `
         <article class="archive-card pdf-card reveal">
           ${visualMarkup(work)}
@@ -254,7 +259,10 @@
             <h3>${escapeHTML(work.title)}<br><span>${escapeHTML(work.titleCn)}</span></h3>
             <p>${escapeHTML(work.summaryCn)}</p>
           </div>
-          <a class="button" href="${escapeHTML(pdfHref)}"${work.pdfUrl ? ' target="_blank" rel="noopener"' : ""}>${pdfButtonLabel}</a>
+          <a class="archive-open-button" href="${escapeHTML(pdfHref)}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""}>
+            <span>${pdfButtonLabel}</span>
+            <span class="button-arrow" aria-hidden="true">↗</span>
+          </a>
         </article>
       `;
     }
@@ -330,7 +338,7 @@
     const className = `timeline-project-card orientation-${escapeHTML(orientationOf(work))}`;
     if (!href) return `<article class="${className}">${inner}</article>`;
     const isExternal = /^https?:\/\//i.test(href);
-    return `<a class="${className}" href="${escapeHTML(href)}"${isExternal ? ' target="_blank" rel="noopener"' : ""} aria-label="Open ${escapeHTML(work.title)}">${inner}</a>`;
+    return `<a class="${className}" href="${escapeHTML(href)}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""} aria-label="Open ${escapeHTML(work.title)}">${inner}</a>`;
   }
 
   function createDragonGameTimelineItem() {
@@ -840,7 +848,7 @@
             <div>
               <strong>Open Project Video / 打开项目视频</strong>
               <span>${escapeHTML(work.videoType === "feishu" ? "This series is collected in the Feishu video archive." : "This video opens in an external player.")}</span>
-              <a class="button primary" href="${escapeHTML(url)}" target="_blank" rel="noopener">Open Link / 打开链接</a>
+              <a class="button primary" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">Open Link / 打开链接</a>
             </div>
           </div>
         `;
