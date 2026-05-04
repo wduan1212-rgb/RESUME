@@ -100,7 +100,7 @@
 
   function coverImageMarkup(work, className = "cover-image") {
     if (work.coverVideoUrl) {
-      return `<video class="${escapeHTML(className)} cover-video" src="${escapeHTML(work.coverVideoUrl)}"${work.coverUrl ? ` poster="${escapeHTML(work.coverUrl)}"` : ""} autoplay muted loop playsinline preload="metadata" aria-label="${escapeHTML(`${work.title} / ${work.titleCn}`)}"></video>`;
+      return `<video class="${escapeHTML(className)} cover-video" data-lazy-video data-src="${escapeHTML(work.coverVideoUrl)}"${work.coverUrl ? ` data-poster="${escapeHTML(work.coverUrl)}"` : ""} autoplay muted loop playsinline preload="none" aria-label="${escapeHTML(`${work.title} / ${work.titleCn}`)}"></video>`;
     }
     if (!work.coverUrl) return "";
     return `<img class="${escapeHTML(className)}" src="${escapeHTML(work.coverUrl)}" alt="${escapeHTML(`${work.title} / ${work.titleCn}`)}" loading="lazy" decoding="async">`;
@@ -283,7 +283,7 @@
     return `
       <a class="dragon-origin-index reveal" href="${escapeHTML(gameUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Open Dragon Covenant interactive game">
         <div class="dragon-origin-media">
-          <video src="${escapeHTML(dragonSeries.indexMotionUrl || "")}" poster="${escapeHTML(dragonSeries.indexPosterUrl || "")}" autoplay muted loop playsinline preload="metadata" aria-label="Dragon Covenant origin index"></video>
+          <video data-lazy-video data-src="${escapeHTML(dragonSeries.indexMotionUrl || "")}" data-poster="${escapeHTML(dragonSeries.indexPosterUrl || "")}" autoplay muted loop playsinline preload="none" aria-label="Dragon Covenant origin index"></video>
         </div>
         <div class="dragon-origin-copy">
           <p class="section-kicker">2025 Narrative Origin</p>
@@ -685,6 +685,45 @@
     if (video.src) playHero();
   }
 
+  function setupLazyVideos(root = document) {
+    const lazyVideos = $$("video[data-lazy-video]", root);
+    if (!lazyVideos.length) return;
+
+    const loadVideo = (video) => {
+      if (video.dataset.lazyLoaded === "true") return;
+      const src = video.dataset.src || "";
+      const poster = video.dataset.poster || "";
+      if (poster) video.poster = poster;
+      if (src) video.src = src;
+      video.preload = "metadata";
+      video.dataset.lazyLoaded = "true";
+      video.load();
+      if (video.autoplay) {
+        video.play().catch(() => {
+          // The poster remains visible if autoplay is blocked or the network is still warming up.
+        });
+      }
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      lazyVideos.forEach(loadVideo);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          loadVideo(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px", threshold: 0.01 }
+    );
+
+    lazyVideos.forEach((video) => observer.observe(video));
+  }
+
   function setupWheelHorizontal(root = document) {
     $$("[data-wheel-horizontal]", root).forEach((gallery) => {
       if (gallery.dataset.wheelBound === "true") return;
@@ -951,6 +990,7 @@
     setupNav();
     setupModal();
     setupHeroVideo();
+    setupLazyVideos();
     setupWheelHorizontal();
     setupGalleryControls();
     setupWorkflowAnimation();
