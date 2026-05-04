@@ -358,7 +358,7 @@
       createDragonGameTimelineItem(),
       ...byIds(["starfield-frontline-game"]).map((work) => withSubTag(work, "游戏类")),
       ...byIds(["ai-creative-tool-system", "self-operated-production-system"]).map((work) => withSubTag(work, "工具类")),
-      ...byIds(["renpy-study-guide"]).map((work) => withSubTag(work, "教学类"))
+      ...byIds(["vibe-coding-guide", "renpy-study-guide"]).map((work) => withSubTag(work, "教学类"))
     ];
 
     const groups = [
