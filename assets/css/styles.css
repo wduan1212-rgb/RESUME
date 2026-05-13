@@ -621,7 +621,7 @@ button {
 }
 
 .highlight-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .metric-card,
@@ -4369,6 +4369,10 @@ video.embed-slot {
   --loop-duration: 38s;
 }
 
+.column-game {
+  --loop-duration: 40s;
+}
+
 .column-app {
   --loop-duration: 42s;
 }
@@ -4413,6 +4417,66 @@ video.embed-slot {
     linear-gradient(180deg, rgba(54, 230, 244, 0.08), rgba(255, 255, 255, 0.015)),
     rgba(6, 21, 25, 0.86);
   transform: translateY(-4px);
+}
+
+.timeline-card-main {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+}
+
+.timeline-project-card.has-actions {
+  position: relative;
+}
+
+.timeline-project-card.has-actions .project-info {
+  padding-bottom: 58px;
+}
+
+.project-action-link,
+.card-action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(116, 238, 255, 0.34);
+  border-radius: 999px;
+  color: var(--cyan);
+  background: rgba(54, 230, 244, 0.08);
+  font-family: var(--font-cn-title);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.project-action-link {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  z-index: 4;
+  min-height: 34px;
+}
+
+.card-action-row {
+  margin-top: 16px;
+}
+
+.card-action-link {
+  min-height: 36px;
+  padding: 0 14px;
+}
+
+.project-action-link:hover,
+.project-action-link:focus-visible,
+.card-action-link:hover,
+.card-action-link:focus-visible {
+  color: #001214;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--cyan), var(--lime));
 }
 
 .project-cover-wrap {

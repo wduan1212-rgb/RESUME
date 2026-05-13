@@ -31,11 +31,14 @@
     "App 宣传": "APP宣传",
     "Travel & Overseas": "APP宣传",
     "Health & Consumer": "AI电商",
-    "Game Visuals": "AI短片",
+    "Game Visuals": "游戏",
     "AI Short Films": "AI短片",
     "AI 短片": "AI短片",
     "Exhibition Boards": "其他",
-    "Portfolio Archive": "其他"
+    "Portfolio Archive": "其他",
+    "Game": "游戏",
+    "Games": "游戏",
+    "游戏类": "游戏"
   };
   const normalizeCategory = (category) => categoryAliases[category] || category;
 
@@ -176,7 +179,8 @@
     }
     const href = mediaHref(work);
     if (!href) return visual;
-    return `<a class="visual-link" href="${escapeHTML(href)}" aria-label="Open ${escapeHTML(work.title)}">${visual}</a>`;
+    const isExternal = /^https?:\/\//i.test(href);
+    return `<a class="visual-link" href="${escapeHTML(href)}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""} aria-label="Open ${escapeHTML(work.title)}">${visual}</a>`;
   }
 
   function workCard(work, options = {}) {
@@ -190,6 +194,11 @@
           </div>
           <h3>${escapeHTML(work.title)}<br><span>${escapeHTML(work.titleCn)}</span></h3>
           ${showSummary ? `<p>${escapeHTML(work.summaryCn)}</p>` : ""}
+          ${work.highResUrl ? `
+            <div class="card-action-row">
+              <a class="card-action-link" href="${escapeHTML(work.highResUrl)}" target="_blank" rel="noopener noreferrer">查看高清视频</a>
+            </div>
+          ` : ""}
         </div>
       </article>
     `;
@@ -198,7 +207,7 @@
   function renderHighlights() {
     const root = $("[data-highlights]");
     if (!root) return;
-    const keys = ["AI编程", "APP宣传", "AI短片", "AI电商", "其他"];
+    const keys = ["游戏", "AI编程", "APP宣传", "AI短片", "AI电商", "其他"];
     root.innerHTML = categories
       .filter((category) => keys.includes(category.key))
       .map((category) => {
@@ -338,6 +347,14 @@
     const className = `timeline-project-card orientation-${escapeHTML(orientationOf(work))}`;
     if (!href) return `<article class="${className}">${inner}</article>`;
     const isExternal = /^https?:\/\//i.test(href);
+    if (work.highResUrl) {
+      return `
+        <article class="${className} has-actions">
+          <a class="timeline-card-main" href="${escapeHTML(href)}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""} aria-label="Open ${escapeHTML(work.title)}">${inner}</a>
+          <a class="project-action-link" href="${escapeHTML(work.highResUrl)}" target="_blank" rel="noopener noreferrer">查看高清视频</a>
+        </article>
+      `;
+    }
     return `<a class="${className}" href="${escapeHTML(href)}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ""} aria-label="Open ${escapeHTML(work.title)}">${inner}</a>`;
   }
 
@@ -362,32 +379,34 @@
   function renderTimeline2026(content2026) {
     const byIds = (ids) => ids.map(findWork).filter(Boolean);
     const withSubTag = (work, subTag) => ({ ...work, timelineSubTag: subTag });
+    const gameItems = [
+      ...byIds(["xundao-daqian", "dragon-covenant-finale", "coa-game-showcase"]).map((work) => withSubTag(work, "游戏方向"))
+    ];
     const vibeCodingItems = [
-      createDragonGameTimelineItem(),
-      ...byIds(["starfield-frontline-game"]).map((work) => withSubTag(work, "游戏类")),
+      ...byIds(["starfield-frontline-game"]).map((work) => withSubTag(work, "游戏 Demo")),
       ...byIds(["ai-creative-tool-system", "self-operated-production-system"]).map((work) => withSubTag(work, "工具类")),
       ...byIds(["vibe-coding-guide", "renpy-study-guide"]).map((work) => withSubTag(work, "教学类"))
     ];
 
     const groups = [
       {
-        id: "ai-short",
-        className: "column-ai-short",
-        title: "AI短片",
-        description: "横屏叙事短片 / 游戏 CG / Demo",
-        items: byIds(["dragon-covenant-finale", "baidu-cloud-doorway", "xundao-daqian", "undersea-demo"])
+        id: "game",
+        className: "column-game",
+        title: "游戏方向",
+        description: "游戏视觉 / 角色 Campaign / 网页入口",
+        items: gameItems
       },
       {
         id: "app-promo",
         className: "column-app",
-        title: "AI创意视频-APP宣传",
-        description: "支付、旅行、贷款、出行等 App 视频",
-        items: byIds(["alipay-overseas-project", "trip-uca-travel", "asha-easy-cash-app", "brazil-local-campaign", "vivago-overseas-campaign"])
+        title: "APP方向",
+        description: "支付、旅行、贷款、出行与品牌短片",
+        items: byIds(["baidu-cloud-doorway", "undersea-demo", "alipay-overseas-project", "trip-uca-travel", "asha-easy-cash-app", "brazil-local-campaign", "vivago-overseas-campaign"])
       },
       {
         id: "ecommerce",
         className: "column-ecommerce",
-        title: "AI创意视频-电商宣传",
+        title: "电商方向",
         description: "服饰、产品、消费品与投放广告",
         items: byIds(["ebenb-cooling-pants", "varta-battery-campaign", "tt-fashion-series", "arthur-andrew-medical"])
       },
@@ -395,7 +414,7 @@
         id: "vibe",
         className: "column-vibe",
         title: "Vibe Coding网站合集",
-        description: "网站、工具、游戏与教学 Demo",
+        description: "网站、工具与教学 Demo",
         items: vibeCodingItems
       }
     ];
@@ -403,19 +422,19 @@
     const totalCount = groups.reduce((sum, group) => sum + group.items.length, 0) || content2026.length;
     return `
       <div class="year-note reveal">
-        <strong>2026 核心创作年：</strong>聚焦 AI 短片、APP 宣传、电商视频与 Vibe Coding 网站合集。
+        <strong>2026 核心创作年：</strong>聚焦游戏方向、APP方向、电商方向与 Vibe Coding 网站合集。
       </div>
-      <div class="timeline-2026-matrix reveal" aria-label="2026 four-track creation timeline">
+      <div class="timeline-2026-matrix reveal" aria-label="2026 creation timeline">
         <div class="timeline-2026-head">
           <span>2026 Main Creation Year</span>
-          <em>AI Short Films · APP Promo · E-commerce Ads · Vibe Coding</em>
+          <em>Games · APP Promo · E-commerce Ads · Vibe Coding</em>
           <strong>${totalCount} project series</strong>
         </div>
         <div class="timeline-2026-grid">
           ${groups.map((group) => {
             const loopItems = group.items.length > 1 ? [...group.items, ...group.items] : group.items;
             return `
-              <section class="timeline-2026-column ${escapeHTML(group.className)}" aria-label="${escapeHTML(group.title)}">
+              <section class="timeline-2026-column ${escapeHTML(group.className)}${group.items.length <= 1 ? " is-static" : ""}" aria-label="${escapeHTML(group.title)}">
                 <div class="timeline-column-header">
                   <h4>${escapeHTML(group.title)}</h4>
                   <p>${escapeHTML(group.description)}</p>
@@ -444,7 +463,7 @@
     const boards2025 = content2025.filter((work) => work.displayGroup === "timeline-2025-board");
 
     root.innerHTML = `
-      ${yearBlock("2026", "Main Creation Year", "AI Short Films · APP Promo · E-commerce Ads · Vibe Coding", renderTimeline2026(content2026))}
+      ${yearBlock("2026", "Main Creation Year", "Games · APP Promo · E-commerce Ads · Vibe Coding", renderTimeline2026(content2026))}
       ${yearBlock("2025", "Visual Exploration", "Dragon Covenant / Competition Boards", `
         <div class="year-note reveal">AIGC fantasy film studies and competition boards presented as a focused visual exploration archive. / AIGC 奇幻短片与竞赛展板构成独立视觉探索归档。</div>
         ${dragonOriginIndexCard()}
